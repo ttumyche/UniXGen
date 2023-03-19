@@ -1,0 +1,23 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="10">
+            <item index="0" class="java.lang.String" itemvalue="huggingface-hub" />
+            <item index="1" class="java.lang.String" itemvalue="ninja" />
+            <item index="2" class="java.lang.String" itemvalue="tbb" />
+            <item index="3" class="java.lang.String" itemvalue="mkl-include" />
+            <item index="4" class="java.lang.String" itemvalue="cmake" />
+            <item index="5" class="java.lang.String" itemvalue="intel-openmp" />
+            <item index="6" class="java.lang.String" itemvalue="cffi" />
+            <item index="7" class="java.lang.String" itemvalue="torchxrayvision" />
+            <item index="8" class="java.lang.String" itemvalue="pycparser" />
+            <item index="9" class="java.lang.String" itemvalue="mkl" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
