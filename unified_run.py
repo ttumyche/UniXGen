@@ -32,13 +32,6 @@ for model_path, configs in models.items():
                     'max_img_num': config[1],
                     'target_count': config[2],
                     'test_meta_file': meta_file,
-
-                    'vqgan_model_path': '/home/edlab/dylee/mimic/mimic-vqgan/mimiccxr_vqgan1024_reso512/checkpoints/last.ckpt',
-                    'vqgan_config_path': '/home/edlab/dylee/mimic/mimic-vqgan/mimiccxr_vqgan1024_reso512/configs/2021-12-17T08-58-54-project.yaml',
-                    'codebook_indices_path': '/home/edlab/dylee/mimic/mimic-vqgan/codebook_indices/mimiccxr_vqgan1024_res512_codebook_indices.pickle',
-
-                    'img_root_dir': '/home/edlab/dylee/mimic/sut_image_preprocessing/',
-                    'text_root_dir': '/home/edlab/dylee/mimic/physionet.org/files/mimic-cxr-jpg/2.0.0/preprocessed_reports'
                 }
                 TRAINING_CONFIG_LIST = list()
                 for (k, v) in list(TRAINING_CONFIG.items()):
