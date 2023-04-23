@@ -20,8 +20,7 @@ random.seed(42)
 class TransformerLightning_unified(pl.LightningModule):
     def __init__(self, lr=5e-4, weight_decay=0.01,
                  pad_token_idx=0, sos_token_idx=1, eos_token_idx=2,
-                 save_dir="", causal_trans='conditioned_causal',
-                 beam_size=1, **kargs):
+                 save_dir="", causal_trans='conditioned_causal', **kargs):
         super().__init__()
         self.kargs = kargs
         self.max_img_num = kargs['max_img_num']
@@ -42,7 +41,6 @@ class TransformerLightning_unified(pl.LightningModule):
         self.eos_token_idx = eos_token_idx
         self.save_dir = save_dir
         self.causal = causal_trans
-        self.beam_size = beam_size
 
         self.save_hyperparameters(ignore=['tokenizer'])
 
@@ -154,7 +152,6 @@ class TransformerLightning_unified(pl.LightningModule):
             sos_token_idx=self.sos_token_idx,
             eos_token_idx=self.eos_token_idx,
             pad_token_idx=self.pad_token_idx,
-            beam_size=self.beam_size,
             filter_logits_fn='top_p',
             filter_thres=0.9,
             temperature=0.7,
@@ -166,7 +163,6 @@ class TransformerLightning_unified(pl.LightningModule):
 
         gen_images1 = self.transformerLM_unified.generate_image(
             batch,
-            beam_size=self.beam_size,
             filter_logits_fn='top_p',
             filter_thres=0.9,
             temperature=0.7,
@@ -180,7 +176,6 @@ class TransformerLightning_unified(pl.LightningModule):
 
             gen_images2 = self.transformerLM_unified.generate_image(
                 batch,
-                beam_size=self.beam_size,
                 filter_logits_fn='top_p',
                 filter_thres=0.9,
                 temperature=0.7,
@@ -193,7 +188,6 @@ class TransformerLightning_unified(pl.LightningModule):
 
             gen_images3 = self.transformerLM_unified.generate_image(
                 batch,
-                beam_size=self.beam_size,
                 filter_logits_fn='top_p',
                 filter_thres=0.9,
                 temperature=0.7,
@@ -253,7 +247,7 @@ class TransformerLightning_unified(pl.LightningModule):
 
         if self.global_rank == 0:
             if self.max_img_num != -1:
-                torch.save(gathered_test_step_outputs, os.path.join(self.save_dir, f"test_output_{self.ckpt_path.split('/')[-1].split('-')[0]}_beam_{str(self.beam_size)}_{str(self.max_img_num)}_of_{str(self.target_count)}_{self.test_meta_file_name}.pt"))
+                torch.save(gathered_test_step_outputs, os.path.join(self.save_dir, f"test_output_{self.ckpt_path.split('/')[-1].split('-')[0]}_{str(self.max_img_num)}_of_{str(self.target_count)}_{self.test_meta_file_name}.pt"))
                 # !# For generated texts
                 GT_decoded_texts, gen_decoded_texts = [], []
                 for gt_text_i, gen_text_i in zip(total_GT_text, total_gen_text):
@@ -286,11 +280,11 @@ class TransformerLightning_unified(pl.LightningModule):
                 self.log("test_BLEU-4", bleu4)
                 # save csv files for labeler
                 GT_REPORTS_PATH = os.path.join(self.save_dir, 'GT_reports_test_' + str(round(bleu1, 3)) + '_' + str(
-                    round(bleu2, 3)) + '_' + str(round(bleu3, 3)) + '_' + str(round(bleu4, 3)) + '_' + self.ckpt_path.split('/')[-1].split('-')[0] + '_beam_' + str(self.beam_size) + '_' + str(self.max_img_num) + '_of_' + str(self.target_count) + self.test_meta_file_name + '.csv')
+                    round(bleu2, 3)) + '_' + str(round(bleu3, 3)) + '_' + str(round(bleu4, 3)) + '_' + self.ckpt_path.split('/')[-1].split('-')[0] + '_' + str(self.max_img_num) + '_of_' + str(self.target_count) + self.test_meta_file_name + '.csv')
                 GEN_REPORTS_PATH = os.path.join(self.save_dir, 'GEN_reports_test_' + str(round(bleu1, 3)) + '_' + str(
-                    round(bleu2, 3)) + '_' + str(round(bleu3, 3)) + '_' + str(round(bleu4, 3)) + '_' + self.ckpt_path.split('/')[-1].split('-')[0] + '_beam_' + str(self.beam_size) + '_' + str(self.max_img_num) + '_of_' + str(self.target_count) + self.test_meta_file_name + '.csv')
+                    round(bleu2, 3)) + '_' + str(round(bleu3, 3)) + '_' + str(round(bleu4, 3)) + '_' + self.ckpt_path.split('/')[-1].split('-')[0] + '_' + str(self.max_img_num) + '_of_' + str(self.target_count) + self.test_meta_file_name + '.csv')
                 IMG_PATHS = os.path.join(self.save_dir, 'IMG_paths_test_' + str(round(bleu1, 3)) + '_' + str(round(bleu2, 3)) + '_' + str(
-                                             round(bleu3, 3)) + '_' + str(round(bleu4, 3)) + '_' + self.ckpt_path.split('/')[-1].split('-')[0] + '_beam_' + str(self.beam_size) + '_' + str(self.max_img_num) + '_of_' + str(self.target_count) + self.test_meta_file_name + '.csv')
+                                             round(bleu3, 3)) + '_' + str(round(bleu4, 3)) + '_' + self.ckpt_path.split('/')[-1].split('-')[0] + '_' + str(self.max_img_num) + '_of_' + str(self.target_count) + self.test_meta_file_name + '.csv')
                 f_gt = open(GT_REPORTS_PATH, 'a')
                 wr_gt = csv.writer(f_gt)
                 f_gen = open(GEN_REPORTS_PATH, 'a')

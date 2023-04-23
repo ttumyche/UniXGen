@@ -55,7 +55,6 @@ if __name__ == '__main__':
     parser.add_argument('--under_sample', default='fixed_all_unified', type=str)
     parser.add_argument('--max_text_len', default=256, type=int)
     parser.add_argument('--target_view', default=['AP', 'PA', 'LATERAL', 'LL'], nargs='+', type=str)
-    parser.add_argument('--beam_size', default=1, type=int)
 
     parser.add_argument('--transformer', default=True)
     parser.add_argument('--FAVOR', default=True)
@@ -212,7 +211,6 @@ if __name__ == '__main__':
         eos_token_idx=tokenizer.token_to_id("[EOS]"),
         save_dir='output',
         causal_trans=args.causal_clm,
-        beam_size=args.beam_size,
         **kargs_unified,
     )
 
@@ -277,7 +275,6 @@ if __name__ == '__main__':
         model.test_meta_file_name = args.test_meta_file.split('/')[-1].split('.')[0]
         model.max_img_num = args.max_img_num
         model.target_count = args.target_count
-        model.beam_size = args.beam_size
         trainer = pl.Trainer(**trainer_args, logger=wandb_logger, plugins=DDPPlugin(find_unused_parameters=True), 
                                 gradient_clip_val=args.gradient_clip_val, profiler="simple", limit_train_batches=0, limit_val_batches=0)
         trainer.test(model, test_dataloaders=dm.test_dataloader()) 
