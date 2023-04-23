@@ -46,7 +46,7 @@ python decode_cxr.py
 
 #### For decoding radiology reports,
 Run decode_report.py. \
-Save the decoded outputs according to your preferences.
+Save the decoded outputs according to your preference.
 
 ~~~
 python decode_report.py
