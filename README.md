@@ -29,6 +29,25 @@ python unified_main.py
 
 ## Test Models
 
+First, run unified_run.py. \
+The generated discrete code sequences are saved as files.
+  
 ~~~
 python unified_run.py
+~~~
+
+#### For decoding chest X-rays,
+Run decode_cxr.py. \
+The generated seqeucens for chest X-rays are decoded and saved in the '.jpeg' format.
+
+~~~
+python decode_cxr.py
+~~~
+
+#### For decoding radiology reports,
+Run decode_report.py. \
+Save the decoded outputs according to your preferences.
+
+~~~
+python decode_report.py
 ~~~
