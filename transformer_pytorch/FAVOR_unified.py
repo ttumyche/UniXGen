@@ -85,6 +85,25 @@ def gaussian_orthogonal_random_matrix(nb_rows, nb_columns, scaling=0, device=Non
     return torch.diag(multiplier) @ final_matrix
 
 
+def all_modality_causal_linear_attn_noncuda(q, k, v, condition_len, chunk_size=128, eps=1e-6):  # q, k: [B, global_head, seq_len, nb_features]  v: [B, global_head, seq_len, dim_head]
+    last_k_cumsum = 0
+    last_context_cumsum = 0
+    outs = []
+    for q, k, v in zip(*map(lambda t: t.chunk(chunk_size, dim=-2), (q, k, v))):  # q,k:[B, global_head, seq_len/chunk_size, nb_features]  v:[B, global_head, seq_len/chunk_size, dim_head]
+        k_cumsum = last_k_cumsum + k.cumsum(dim=-2)  # [B, global_head, seq_len/chunk_size, nb_features]
+        D_inv = 1. / torch.einsum('...nd,...nd->...n', q, k_cumsum.type_as(q) + eps)  # -> [B, global_head, seq_len/chunk_size]
+
+        context = torch.einsum('...nd,...ne->...nde', k, v)  # -> [B, global_head, seq_len/chunk_size, nb_features ,dim_head] outer product.
+        context_cumsum = last_context_cumsum + context.cumsum(dim=-3)  # [B, global_head, seq_len/chunk_size, nb_features ,dim_head]
+
+        out = torch.einsum('...nde,...nd,...n->...ne', context_cumsum, q, D_inv)  # -> [B, global_head, seq_len/chunk_size, dim_head]
+
+        last_k_cumsum = k_cumsum[:, :, -1:]  # [B, global_head, 1, nb_features]
+        last_context_cumsum = context_cumsum[:, :, -1:]  # [B, global_head, 1, nb_features ,dim_head]
+        outs.append(out)
+
+    return torch.cat(outs, dim=-2)  # -> [B, global_head, seq_len, dim_head]
+    
 def all_modality_causal_linear_attn_cuda(q, k, v, condition_len, eps=1e-6):
     from fast_transformers.causal_product import CausalDotProduct
     autocast_enabled = torch.is_autocast_enabled()
