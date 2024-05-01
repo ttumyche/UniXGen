@@ -1,4 +1,8 @@
-# Unified Chest X-ray and Radiology Report Generation Model with Multi-view Chest X-rays ([Arxiv](https://arxiv.org/abs/2302.12172))
+# UniXGen
+Code for the CHIL 2024 paper:
+["Vision-Language Generative Model for View-Specific Chest X-ray Generation"](https://arxiv.org/abs/2302.12172)
+
+------------
 
 <img width="1626" alt="nbme_architecture" src="https://user-images.githubusercontent.com/123858584/226160635-ff47d23a-e35f-45ec-aeb0-06a823f50e5d.png">
 
