@@ -30,8 +30,8 @@ pip install -r requirements.txt
 
 ## Model Weights
 
-####  1. [Chest X-ray Tokenizer](https://drive.google.com/file/d/1CqlKoZQb5FQPUzSk3zanKnFP0qFVSiWu/view?usp=sharing): Download VQGAN and place into the /mimiccxr_vqgan directory
-####  2. [UniXGen](https://drive.google.com/file/d/1qS3TFEjpPN-Tjjh6kLE2KElJri77M-Fq/view?usp=share_link): Download the model and place into the /ckpt directory
+####  1. [Chest X-ray Tokenizer](https://drive.google.com/drive/folders/1Ia_GqRrmZ8g6md02TC5_nkrGn6eUwVaG?usp=sharing): Download VQGAN and place into the /mimiccxr_vqgan directory
+####  2. [UniXGen](https://drive.google.com/file/d/1RBQEoYTBRKBh6L53QCE0OIXL0Da5knkY/view?usp=sharing): Download the model and place into the /ckpt directory
 
 ## Dataset
 
